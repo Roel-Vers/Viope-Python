@@ -1,0 +1,164 @@
+The first exercise is related to basic class definition. Create a program which has a class Player, which has two attributes, teamcolor and points. Then create a main function which creates an object from this class, gives its attributes values "Blue" and "300". After this, make the program print the object data in the form "The [color] contender has [points] points!" like this:
+
+
+
+		
+>>> 
+The Blue contender has 300 points!
+>>> 		
+
+solution:
+class Player:
+	pass
+
+color = Player()
+color.value = "Blue"
+points = Player()
+points.value = "300"
+	
+print("The ", color.value, " contender has ", points.value, " points!")
+
+
+	
+
+This exercise continues with the code made in the last exercise. In the last exercise one of the objectives was to create a class with two attributes, teamcolor and points. Now, add two methods called "tellscore" and "goal". When the method "tellscore" is called, the objects prints out "I am [teamcolor], we have [points] points!", and if the method goal is called, the object adds one point to the attribute points. Also make the attribute points a private attribute, and to accommodate that change, make the neccessary changes to get the class to work properly.
+
+Then modify the program's main function so that instead of printing the data itself, the main function first calls the method "goal" and then the method "tellscore". If everything went correctly, the program should print out this:
+
+
+
+>>> 
+I am Blue, we have 1 points!
+>>> 
+		
+solution:
+class Player:
+	__points = 0
+	teamcolor = ""
+	
+	def tellscore(self):
+		print("I am " + self.teamcolor + ", we have ", self.__points, " points!")
+		
+	def goal(self):
+		self.__points += 1
+		
+def main():
+	first = Player()
+	first.teamcolor = "Blue"
+	first.goal()
+	first.tellscore()
+	
+if __name__ == "__main__":
+    main()
+    
+    
+In the third exercise we make one final adjustment to the class by adding initialization data and a docstring. First add a docstring "Player-class: stores data on team colors and points.". After this, add an initializing method __init__ to the class, and make it prompt the user for a new player color with the message"What color do I get?: ".
+
+Edit the main function to first create two player objects from the class, player1 and player2. After this, make the program call player1's method "goal" twice and player2's goal once. After this, call both objects with the method "tellscore". If everything went correctly, the program should print something like this:
+
+
+
+>>> 
+What color do I get?: Blue
+What color do I get?: Red
+I am Blue, we have 2 points!
+I am Red, we have 1 points!
+
+>>> 
+
+solution:
+class Player:
+	"""Player-class: stores data on team colors and points."""
+	
+	teamcolor = ""
+	__points = 0
+	
+	def tellscore(self):
+		print("I am " + self.teamcolor + ", we have",self.__points," points!")
+	
+	def goal(self):
+		self.__points += 1
+
+def main():
+	player1 = Player()
+	player1.teamcolor = input("What color do I get?: ")
+	
+	player2 = Player()
+	player2.teamcolor = input("What color do I get?: ")
+	
+	
+	player1.goal()
+	player1.goal()
+	player2.goal()
+	
+	player1.tellscore()
+	player2.tellscore()
+	
+if __name__ == "__main__":
+	main()
+  
+  
+The last exercise in chapter 10, and at the same time the course tries out inheritance. In this exercise, your task is to define a new class which will be inherited from the class Customer defined in the chapter's theory part.
+
+
+
+01  class Customer:
+02      name = "John Johnsson"
+03      total = 1000
+04      paymenttype = "Masterexpress"
+05      number = "1234-5678-9012345"
+06
+07      def printout(self):
+08          print("Name: ", self.name)
+09          print("Total: ", self.total)
+10          print("Payment type: ", self.paymenttype)
+11          print("Card/Bill number: ", self.number)
+
+
+
+Define a new class called ManageCustomer which has the following abilities:
+1) A method "addbill", which increases the attribute total by 50, and
+2) a method "payment" which decreases the attribute total by 100.
+
+Remember that you only need to write the new inheriting class ManageCustomer. The system will test the class, but in the submitted answer only the class definition is needed. If the class is defined correctly, the program will print the following:
+
+
+
+>>> 
+Name:  Homer Griffin
+Total:  850
+Payment type:  Masterexpress
+Card/Bill number:  1234-5678-9012345
+>>> 
+
+solution:
+# -*- coding: cp1252 -*-
+
+class Customer:
+    name = "John Johnsson"
+    total = 1000
+    paymenttype = "Masterexpress"
+    number = "1234-5678-9012345"
+
+    def printout(self):
+        print("Name: ", self.name)
+        print("Total: ", self.total)
+        print("Payment type: ", self.paymenttype)
+        print("Card/Bill number: ", self.number)
+
+class ManageCustomer(Customer):
+	def addbill(self):
+		self.total += 50
+	def payment(self):
+		self.total -= 100
+		
+deg main():
+	person = ManageCustomer()
+	person.name = "Homer Griffin"
+	person.addbill()
+	person.payment()
+	person.payment()
+	person.printout()
+
+if __name__ == "__main__":
+	main()
