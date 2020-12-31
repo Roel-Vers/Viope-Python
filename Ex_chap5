@@ -1,0 +1,174 @@
+The first exercise in the fifth chapther is a straightforward file reading exercise. There is a file in the same directory with the exercise source code called "facts.txt", which has a long strip of text. Create a program which reads the entire content of the file and prints it on the screen with the text "Following was read from the file:". When working correctly, the program prints something like this:
+
+
+
+>>> 
+Following was read from the file: Proin enim leo, tincidunt eget, sollicitudin a, aliquam sit amet, nisl. Proin dapibus tortor eu lectus. Curabitur in risus nec arcu pretium aliquam. In hac habitasse platea dictumst. Integer sit amet lacus sit amet pede blandit mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut odio. Nullam nisl sem, adipiscing id, auctor eu, pulvinar et, nulla. Aenean convallis erat. Aliquam iaculis mauris sed sem.
+
+Fusce ultricies urna sed orci. Suspendisse accumsan ipsum egestas est. Pellentesque nisl. Quisque sodales ligula quis mi. In pede sapien, molestie vel, aliquet sit amet, malesuada a, magna. Nulla ipsum. 
+>>> 
+
+solution:
+readfile = open("facts.txt","r")
+content = readfile.readline()
+
+print("Following was read from the file: ", content, end = '')
+place = readfile.tell()
+readfile.seek(place)
+content = readfile.read()
+print(content)
+	
+readfile.close()
+
+
+Unsurprisingly, the second exercise in this chapter discusses the task of writing to a file. Create a program which prompts the user for a file name "Give a file name: " and then for an input "Write something: ". After this, the program writes the string given by the user to the file and reports "Wrote [input] to the file [name].". When working correctly, the program prints something like this:
+
+ 
+
+
+>>> 
+Give a file name: log.txt
+Write something: Attencion, attencion. 10, 10, 22, 33, Adios.
+Wrote Attencion, attencion. 10, 10, 22, 33, Adios. to the file log.txt.
+>>>  
+
+solution:
+file = input("Give a file name: ")
+myfile = open(file, "w")
+
+mytext = (input("Write something: "))
+
+myfile.write(mytext)
+print ("Wrote ", mytext, " to the file ", file)
+
+
+In the third program, we take a look into the classification of file contents. In the same directory with the source code is a file "strings.txt", which has random strings in several lines. The lines can be divided into two groups: those which only have letters (a-z, A-Z) and numbers (0-9), and those which also have random special characters (?,&,@, $ ...).
+
+ 
+
+Create a program which reads all of the lines from the file and tests the lines. If the line has only letters and/or numbers, the program prints "[line] was ok.". If the line has special characters, the program should print "[line] was invalid.". When the program works, it prints out something like this:
+
+
+>>> 
+5345m345ö34l was ok.
+no2no123non4 was ok.
+noq234n5ioqw#% was invalid.
+%#""SGMSGSER was invalid.
+doghdp5234 was ok.
+sg,dermoepm was invalid.
+43453-frgsd was invalid.
+hsth())) was invalid.
+bmepm35wae was ok.
+vmopaem2234+0+ was invalid.
+gsdm12313 was ok.
+bbrbwb55be3"?"#? was invalid.
+"?"#%#"!%#"&"?%%"?#?#"?" was invalid.
+retrte#%#?% was invalid.
+abcdefghijklmnopqrstuvxy was ok.
+>>> 
+
+ 
+
+It is advisable to read the lines one at a time, test them with the isalmun() string test and go on from there. Also remember that the strings may also end in a line break (\n), which is allowed, but fails the .isalnum() test if not sliced away.
+
+solution:
+file = open('strings.txt','r')
+data = file.readlines()
+
+for i in data:
+    stripped_line = i.strip()
+    if (stripped_line.isalnum()):
+       print (stripped_line, 'was ok.')
+    else:
+       print (stripped_line, 'was invalid.')
+file.close()
+
+
+The last exercise in this chapter is the first part of the second multi-part assignment of this course, the notebook. In this notebook the user is able to add, read and delete notes from a separate note file "notebook.txt".
+
+Create a program which allows the user to
+(1) Read the contents of the notebook
+(2) Add notes to the file or
+(3) Delete all of the notes.
+If the user selects 1, the entire notebook file is printed to the screen, if 2 then the program prompts "Write a new note: ", and adds the written note as the last line into the file with a trailing line break "\n". If the player selects 3, the file is emptied and the message "Notes deleted" will be shown. Also add the option (4) Quit, which ends the program, printing "Notebook shutting down, thank you.". With other selections the program prompts "Incorrect selection". When working, the program prints following:
+
+
+
+
+>>> 
+(1) Read the notebook
+(2) Add note
+(3) Empty the notebook
+(4) Quit
+
+Please select one: 2
+Write a new note: Buy new tires
+(1) Read the notebook
+(2) Add note
+(3) Empty the notebook
+(4) Quit
+
+Please select one: 2
+Write a new note: Buy new headlights
+(1) Read the notebook
+(2) Add note
+(3) Empty the notebook
+(4) Quit
+
+Please select one: 1
+Buy new tires
+Buy new headlights
+
+(1) Read the notebook
+(2) Add note
+(3) Empty the notebook
+(4) Quit
+
+Please select one: 3
+Notes deleted.
+(1) Read the notebook
+(2) Add note
+(3) Empty the notebook
+(4) Quit
+
+Please select one: 4
+Notebook shutting down, thank you.
+>>>  
+
+
+Notice that the fastest way to delete a file's contents is to open it with mode "w" and close it immediately.
+
+solution:
+print("(1) Read the notebook")
+print("(2) Add note")
+print("(3) Empty the notebook")
+print("(4) Quit")
+
+select = input("Please select one: ")
+
+while True:
+	if select == "4":
+		print("Notebook shutting down, thank you.")
+		break
+	else:
+		if select == "1":
+			notebook=open("notebook.txt","r")
+			reading=notebook.read()
+			print(reading)
+		elif select == "2":
+			notebook=open("notebook.txt","a")
+			note=input("Write a new note: ")
+			notebook.write(note)
+		elif select == "3":
+			notebook=open("notebook.txt","w")
+			notebook.close()
+			print("Notes deleted.")
+		print("(1) Read the notebook")
+		print("(2) Add note")
+		print("(3) Empty the notebook")
+		print("(4) Quit")
+
+		select = input("Please select one: ")
+    
+    
+ 
