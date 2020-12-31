@@ -1,0 +1,391 @@
+The first exercise in this chapter consists of simple module library operations. In the chapter, a module called random was introduced. This module consists of several functions which can be used to get random numbers. The idea here is to create a program, which simulates coin flips by randomly selecting 0 (Tails) or 1 (Heads) and printing out the result. When working correctly, the program prints out something like this:
+
+
+
+
+
+>>> 
+Heads!
+
+ 
+
+Obviously, as the program applies random activities, it may give any combination of five heads or tails. For example, running the program a second time resulted in this:
+
+ 
+
+
+5 coin flips:
+Tails!
+Heads!
+Heads!
+Tails!
+Heads!
+>>> 
+
+solution:
+import random
+
+number = random.randint(0,1)
+if number == 0:
+	print("Tails!")
+else:
+	print("Heads!")
+  
+  
+The second exercise in this chapter continues with random selection. In this exercise the objective is to develop a game called nuke-foot-cockroach, which is pretty similar to the more popular variant, paper-rock-scissors. The rules are simple: both players select either nuke, foot or cockroach, and the winner is determined in the following way: Foot beats cockroach, nuke beats foot and cockroach beats nuke. If both the player and the AI select the same, it's a tie, except if both choose nuke, then both lose.
+
+Implement the game so that the other player is computer controlled, and chooses randomly either foot(number 1), cockroach(number 3) or nuke(number 2). Also implement a feature which keeps the score, calculating both rounds the player won, and ties. If the player wins, print "You WIN!", if they loose "You LOSE!". If the round was a tie, either "It is a tie!" or "Both LOSE!", depending on if the tie was caused by a nuke or not. If the player selects "quit", the game ends and the final score is given. When the game works correctly, it prints the following:
+
+
+
+	
+
+>>> 
+Foot, Nuke or Cockroach? (Quit ends): Nuke
+You chose: Nuke
+Computer chose: Foot
+You WIN!
+Foot, Nuke or Cockroach? (Quit ends): Nuke
+You chose: Nuke
+Computer chose: Nuke
+Both LOSE!
+Foot, Nuke or Cockroach? (Quit ends): Cockroach
+You chose: Cockroach
+Computer chose: Nuke
+You WIN!
+Foot, Nuke or Cockroach? (Quit ends): Foot
+You chose: Foot
+Computer chose: Nuke
+You LOSE!
+Foot, Nuke or Cockroach? (Quit ends): Spaceshuttle
+Incorrect selection.
+Foot, Nuke or Cockroach? (Quit ends): Foot
+You chose: Foot
+Computer chose: Nuke
+You LOSE!
+Foot, Nuke or Cockroach? (Quit ends): Quit
+You played 5 rounds, and won 2 rounds, playing tie in 0 rounds.
+>>>  
+	
+
+/div>
+
+solution:
+import random
+
+def kps():
+	a = random.randint(1,3)
+	if a == 1:
+		a = "Foot"
+	elif a == 2:
+		a = "Nuke"
+	elif a == 3:
+		a = "Cockroach"
+	return (a)
+	print (a)
+
+def main():
+	i = True
+	round = 0
+	wins = 0
+	draws = 0
+	while i:
+		round = round + 1
+		computerselection = kps()
+		userselection = input("Foot, Nuke or Cockroach? (Quit ends): ")
+        
+		if userselection != "Quit":
+			if userselection != "Foot" and userselection != "Nuke" and userselection != "Cockroach":
+				print("Incorrect selection.")
+				round = round -1
+			else: 
+				print("You chose: ", userselection)
+				print("Computer chose: ", kps())
+				
+			if (userselection == computerselection and userselection == "Nuke"):
+				print("Both LOSE!")
+			elif computerselection == userselection:
+				print("It is a tie!")
+				draws = draws + 1
+			elif userselection == "Foot" and computerselection == "Nuke":
+				print("You LOSE!")
+			elif userselection == "Foot" and computerselection == "Cockroach":
+				print("You WIN!")
+				wins = wins + 1
+			elif userselection == "Nuke" and computerselection == "Cockroach":
+				print("You LOSE!")
+			elif userselection == "Nuke" and computerselection == "Foot":
+				print("You WIN!")
+				wins = wins +1
+			elif userselection == "Cockroach" and computerselection == "Nuke":
+				print("You WIN!")
+				wins = wins + 1
+				
+		elif userselection == "Quit":
+			round = round -1
+			print("You played ",round," rounds, and won ", wins," rounds, playing tie in ",draws," rounds.")
+			i = False
+       
+if __name__ == "__main__":
+    main()
+    
+    
+The third exercise of this chapter goes back from game programming to a more serious line, and discusses the creation of self-made modules. Unlike other exercises, in this exercise the idea is not to create a full program, but only to write a module for existing software.
+
+In the exercise, we already have the main program in the module, which is as follows:
+
+
+
+	
+# -*- coding: cp1252 -*-
+
+import mymodule
+
+mymodule.printme("Exampleline")
+
+	
+
+
+The objective is to implement this mymodule-module applied in the exercise. Create a module, which has a function printme, which prints the given parameter with the disclaimer "I got:" and after that, "The parameter was [length] characters long." When the module is implemented correctly, the program prints out the following:
+
+
+
+	
+>>> 
+
+I got: Exampleline
+The parameter was 11 characters long.
+>>> 
+	
+solution:
+def printme(Exampleline):
+	print("I got: ", Exampleline)
+	print("The parameter was ", len(Exampleline)," characters long.")
+  
+  
+The fourth exercise in this module elaborates on the idea applied in the last exercise. In the exercise the idea is once again to create a module for an existing main program. The module tests the feasibility of different user-given inputs for a password. The existing code which uses the module is as follows:
+
+
+
+	
+
+# -*- coding: cp1252 -*-
+
+import inspector
+while True:
+    userinput = input("Give a string for testing: ")
+    tulos = inspector.testme(userinput)
+    if tulos == True:
+        print("This string fits for a password!")
+        break
+    else:
+        print("The module says no.")
+
+	
+
+
+
+
+The idea is to create the module inspector and the function testme which receives the user-given candidate for a password. If the given input is shorter than 6 characters, contains only letters or only numbers, the module should reject the candidate and return False. If the input is longer than 6 characters and has both numbers and letters, it should be accepted. In this case the module should return True. When the program works correctly, it prints the following:
+
+
+
+			
+>>> 
+Give a string for testing: Test
+The module says no.
+Give a string for testing: 234234
+The module says no.
+Give a string for testing: Youhavetobekiddingme1234
+This string fits for a password!
+>>> 
+	
+
+
+The program does not have to be able to distinguish normal numbers and letters (a-z, A-Z) from special characters (#,?,%, $ etc.), but only ensure that the tested string is at least 5 long. Also, it may be worthwhile to check out the different types of string operators from the Chapter 2.
+
+solution:
+def testme(userinput):
+	return_val=True
+	if len(userinput)<6:
+		return_val=False
+	if not any(char.isdigit() for char in userinput):
+		return_val=False
+	if not any(char.isalpha() for char in userinput):
+		return_val=False
+	return return_val
+  
+  
+This exercise expands on the calculator, which was made in chapter 4, exercise 4. In this exercise, add sin() and cos() -calculations from the library module math to the calculator. Add these actions as selections 5 and 6, simultaneously moving the "change numbers" feature to 7 and "Quit" to 8. When the user calls either of the new features, the first number is the divident and second the divider like this: sin(number_1/number2). When correctly implemented, the program prints the following:
+
+
+
+			
+>>> 
+
+Calculator
+Give the first number: 1
+Give the second number: 2
+(1) +
+(2) -
+(3) *
+(4) /
+(5)sin(number1/number2)
+(6)cos(number1/number2)
+(7)Change numbers
+(8)Quit
+Current numbers: 1 2
+Please select something (1-6): 5
+The result is: 0.479425538604203
+(1) +
+(2) -
+(3) *
+(4) /
+(5)sin(number1/number2)
+(6)cos(number1/number2)
+(7)Change numbers
+(8)Quit
+Current numbers: 1 2
+Please select something (1-6): 6
+The result is: 0.8775825618903728
+(1) +
+(2) -
+(3) *
+(4) /
+(5)sin(number1/number2)
+(6)cos(number1/number2)
+(7)Change numbers
+(8)Quit
+Current numbers: 1 2
+Please select something (1-6): 8
+Thank you!
+>>> 
+
+solution:
+import math
+
+print("Calculator")
+number1 = input("Give the first number: ")
+number1 = int(number1)
+number2 = input("Give the second number: ")
+number2 = int(number2)
+
+while True:
+	print("(1) +")
+	print("(2) -")
+	print("(3) *")
+	print("(4) /")
+	print("(5) sin(number1/number2)")
+	print("(6) cos(number1/number2)")
+	print("(7) Change numbers")
+	print("(8) Quit")
+	print("Current numbers: ", number1, " ", number2)
+	select = input("Please select something (1-6): ")
+
+	if select == "1":
+		result = number1+number2
+		result = str(result)
+		print("The result is: " + result)
+	elif select == "2":
+		result = number1-number2
+		result = str(result)
+		print("The result is: " + result)
+	elif select == "3":
+		result = number1*number2
+		result = str(result)
+		print("The result is: " + result)
+	elif select == "4":
+		result = number1/number2
+		result = str(result)
+		print("The result is: " + result)
+	elif select == "5":
+		result = math.sin(number1/number2)
+		result = str(result)
+		print("The result is: " + result)
+	elif select == "6":
+		result = math.cos(number1/number2)
+		result = str(result)
+		print("The result is: " + result)
+	elif select == "7":
+		number1 = input("Give the first number: ")
+		number1 = int(number1)
+		number2 = input("Give the second number: ")
+		number2 = int(number2)
+	elif select == "8":
+		print("Thank you!")
+		break
+    
+    
+ The last exercise in this chapter adds a small feature to the other continuous exercise project, the notebook. In this exercise, add a feature which includes the date and time of the written note to the program. The program works as earlier, but saves data in the form "[note]:::[date and time]" meaning that there is a three-colon separator between the note and timestamp. The timestamp can be generated as follows:
+
+
+
+	
+>>> import time		
+
+>>> time.strftime("%X %x")
+'19:01:34 01/03/09'
+>>> 
+
+
+This returns the date and time in a nice, compact string. When working correctly, the program prints the following:
+
+
+
+			
+>>> 
+(1) Read the notebook
+(2) Add note
+(3) Empty the notebook
+(4) Quit
+
+Please select one: 2
+Write a new note: Call mom.
+(1) Read the notebook
+(2) Add note
+(3) Empty the notebook
+(4) Quit
+
+Please select one: 1
+Call mom.:::11:44:41 04/25/11
+
+(1) Read the notebook
+(2) Add note
+(3) Empty the notebook
+(4) Quit
+
+Please select one: 4
+Notebook shutting down, thank you.
+>>> 
+
+solution:
+import time
+
+time=time.strftime("%X %x")
+
+while True:
+    print("(1) Read the notebook\n(2) Add note\n\
+(3) Empty the notebook\n(4) Quit\n")
+    selection = int(input("Please select one: "))
+    if selection == 1:
+        handle = open("notebook.txt","r")
+        lista = handle.read()
+        print(lista)
+        handle.close()
+
+    elif selection == 2:
+        handle = open("notebook.txt","a")
+        note = input("Write a new note: ")
+        handle.write(note+":::"+time+"\n")
+        handle.close()
+
+    elif selection == 3:
+        handle = open("notebook.txt","w")
+        handle.close()
+        print("Notes deleted.")
+
+    elif selection == 4:
+        print("Notebook shutting down, thank you.")
+        break
+    else:
+        print("Incorrect selection.")
